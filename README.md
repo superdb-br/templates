@@ -45,7 +45,10 @@ Pronto: `npm run dev`, crie uma conta na tela do app e comece a usar.
 > Sem projeto ainda? [Crie um de graça](https://app.superdb.com.br/signup). A tela inicial de cada template confere a ligação e diz exatamente o que falta: variável, projeto ou tabela.
 
 <div align="center">
-<img src="./assets/entrar.png" alt="Tela de login com a checagem da conexão: variáveis, projeto e tabela" width="420" />
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./assets/entrar-escuro.png" />
+  <img src="./assets/entrar-claro.png" alt="Tela de login com a checagem da conexão: variáveis, projeto e tabela, as três conferidas" width="420" />
+</picture>
 </div>
 
 ## O que todos têm em comum
