@@ -103,4 +103,4 @@ Abra uma issue neste repositório, ou fale com a gente em [superdb.com.br/suport
 
 ## Licença
 
-[MIT](./LICENSE). Use, copie e venda o que você construir a partir daqui. O SuperDB em si é open-core (AGPL-3.0); estes templates são livres de propósito, para o seu app ser só seu.
+[MIT](./LICENSE). Use, copie e venda o que você construir a partir daqui: os templates são livres de propósito, para o seu app ser só seu.
