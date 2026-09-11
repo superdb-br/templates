@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tarefas · HTML + SuperDB</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="stylesheet" href="./estilo.css" />
+
+    <!--
+      O import map diz ao navegador de onde vem o SDK. Sem npm e sem build: o
+      esm.sh entrega o @superdb/client como módulo JavaScript. Fixe a versão
+      (@0.2.2) para o app não mudar sozinho quando sair uma nova.
+    -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@superdb/client": "https://esm.sh/@superdb/client@0.2.2"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="pagina">
+      <main class="coluna">
+        <header class="cabecalho">
+          <div class="marca">
+            <img src="./favicon.svg" alt="" />
+            Tarefas
+          </div>
+          <div class="quem" id="quem" hidden>
+            <span id="quem-email"></span>
+            <button class="botao botao-secundario botao-pequeno" id="sair" type="button">Sair</button>
+          </div>
+        </header>
+
+        <div id="tela">
+          <div class="cartao carregando">Carregando…</div>
+        </div>
+
+        <footer class="rodape">
+          Template HTML do SuperDB ·
+          <a href="https://github.com/superdb-br/templates" target="_blank" rel="noreferrer">código</a> ·
+          <a href="https://superdb.com.br/docs" target="_blank" rel="noreferrer">documentação</a>
+        </footer>
+      </main>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,8 @@
+# Sistema e editores
+.DS_Store
+Thumbs.db
+.vscode/*
+.idea
+
+# Se você instalar ferramentas (npx serve, linters)
+node_modules

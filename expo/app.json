@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "Tarefas",
+    "slug": "superdb-tarefas",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "predictiveBackGestureEnabled": false
+    }
+  }
+}

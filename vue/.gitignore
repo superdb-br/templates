@@ -1,0 +1,18 @@
+# Dependências e build
+node_modules
+dist
+dist-ssr
+*.tsbuildinfo
+
+# Variáveis de ambiente: o .env tem as chaves do SEU projeto
+.env
+.env.*
+!.env.example
+*.local
+
+# Logs e editores
+*.log
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea
