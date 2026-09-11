@@ -62,7 +62,7 @@ export async function diagnosticar(config, nomes, opcoes = {}) {
       id: 'tabela',
       estado: 'aviso',
       titulo: 'Tabela "tarefas"',
-      detalhe: 'A tabela existe, mas aceita consulta sem login. Rode o superdb/schema.sql de novo: ele liga o RLS e fecha o acesso anônimo.',
+      detalhe: 'A chave anon ainda tem acesso à tabela: o superdb/schema.sql não rodou inteiro. Rode de novo: ele cria a policy de cada dono e fecha o acesso anônimo.',
     });
   }
   else if (error.code === '42501') {

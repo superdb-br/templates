@@ -11,10 +11,13 @@
 --   3. O dono de cada linha é preenchido pelo banco, a partir do token de quem
 --      chamou. O app nunca manda user_id, e não adianta forjar um.
 --
--- POR QUE O RLS É OBRIGATÓRIO AQUI
---   No SuperDB, toda tabela nova nasce com leitura liberada para a chave anon
---   e escrita liberada para qualquer usuário logado. Sem as linhas abaixo,
---   qualquer pessoa com a chave pública do seu app leria as tarefas de todo mundo.
+-- POR QUE AS POLICIES SÃO OBRIGATÓRIAS AQUI
+--   No SuperDB, toda tabela nova nasce com o RLS ligado e sem nenhuma policy:
+--   fora o dono do projeto e a service key, ninguém lê nem grava nada nela.
+--   Sem as linhas abaixo, o login funciona, mas a lista volta sempre vazia e
+--   todo insert é recusado. A policy abre para cada pessoa só as próprias
+--   linhas, e o revoke tira da chave anon até a permissão na tabela, para que
+--   uma policy aberta demais, criada no futuro, não chegue até ela.
 
 create table if not exists tarefas (
   id         uuid        primary key default gen_random_uuid(),

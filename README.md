@@ -86,7 +86,7 @@ O [`@superdb/client`](https://www.npmjs.com/package/@superdb/client) segue a API
 | Criar o cliente | `createClient(url, anonKey)` | `createClient(url, anonKey, { project: 'slug' })`: o projeto escolhe o schema dos seus dados |
 | Renovar a sessão | automático no SDK | feito pelos templates (o SDK ainda não renova sozinho) |
 | Token para dados | o mesmo access token | `data_plane_token` (o SDK já usa o certo) |
-| Tabela nova | RLS desligado por padrão | igual: rode o `schema.sql`, que liga o RLS e fecha a chave anon |
+| Tabela nova | RLS desligado quando criada por SQL | nasce com RLS ligado e sem policy: fechada até você escrever as policies, como as do `schema.sql` |
 
 Guia completo: [Migrar do Supabase](https://superdb.com.br/docs/guias/migrar-supabase).
 

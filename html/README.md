@@ -111,10 +111,10 @@ create policy tarefas_do_dono on tarefas
 - **`using`** filtra o que cada pessoa vê. Um `select` sem filtro nenhum devolve só as tarefas de quem pediu.
 - **`with check`** recusa gravar uma linha em nome de outra pessoa.
 - **`user_id default auth.uid()`**: o banco preenche o dono a partir do token de quem chamou. Por isso o app nunca manda `user_id`, e não adianta forjar um.
-- **`revoke all on tarefas from anon`**: a chave anon, que vai no código do app, não lê nada sem login.
+- **`revoke all on tarefas from anon`**: a chave anon vai no código do app. Sem permissão nenhuma na tabela, ela continua sem ler mesmo que alguém crie depois uma policy aberta demais.
 
 > [!IMPORTANT]
-> No SuperDB, **toda tabela nova nasce aberta**: a chave anon consegue ler e qualquer usuário logado consegue escrever. Toda tabela que você criar precisa das mesmas linhas do `schema.sql` (RLS ligado, policy, `revoke` da anon e `grant` para `authenticated`). O `AGENTS.md` deste template ensina isso ao seu agente de IA.
+> No SuperDB, **toda tabela nova nasce fechada**: o RLS vem ligado e sem nenhuma policy, então o app não lê nem grava nada nela até você escrever as policies. Lista sempre vazia, sem erro, quase sempre é isso. Toda tabela que você criar precisa das mesmas linhas do `schema.sql` (policy, `revoke` da anon e `grant` para `authenticated`). O `AGENTS.md` deste template ensina isso ao seu agente de IA.
 
 ### Erros em português, com o próximo passo
 
@@ -163,7 +163,7 @@ const { data, error } = await superdb
   .order('criado_em', { ascending: false })
 ```
 
-Use `uuid` com `gen_random_uuid()` nos ids, e não `serial`: a sequência de um `serial` não recebe permissão para o usuário logado, e o `insert` falharia.
+Use `uuid` com `gen_random_uuid()` nos ids: um id sequencial entrega quantas linhas a tabela tem e deixa adivinhar o id das linhas dos outros.
 
 ### Publicar
 
@@ -183,7 +183,7 @@ Use `uuid` com `gen_random_uuid()` nos ids, e não `serial`: a sequência de um 
 | "O projeto "x" não existe" | Slug errado | Use o slug que aparece no endereço do projeto no painel: `app.superdb.com.br/projects/`**`slug`** |
 | "A tabela "tarefas" ainda não existe" | O `schema.sql` não foi rodado **neste** projeto | SQL Editor → cole `superdb/schema.sql` → rode. Depois, "Conferir de novo" |
 | "A API de dados recusou a chave anon" | Chave de outro projeto, ou regenerada no painel | Copie de novo em **Conectar** |
-| "A tabela existe, mas aceita consulta sem login" | A tabela foi criada sem o `schema.sql` | Rode o `schema.sql`: ele liga o RLS e fecha a chave anon |
+| "A chave anon ainda tem acesso à tabela" | O `schema.sql` não rodou (ou não rodou inteiro) neste projeto | Rode o `schema.sql` de novo: ele cria a policy de cada dono e fecha a chave anon |
 | "Essa senha aparece em vazamentos conhecidos" | O projeto confere senhas contra vazamentos públicos | Escolha outra senha |
 | Dois `401` no console, na tela de login | É a checagem da conexão perguntando sem login, de propósito | Nada. Fora de `localhost` ela não roda |
 

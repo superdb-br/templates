@@ -22,7 +22,7 @@ Instruções para agentes de IA (Claude Code, Cursor, Codex e outros) que trabal
 
 ## Banco de dados: toda tabela nova precisa de RLS
 
-No SuperDB, **tabela nova nasce aberta**: a chave anon consegue ler e qualquer usuário logado consegue escrever. Toda tabela nova precisa, no mesmo SQL que a cria:
+No SuperDB, **tabela nova nasce fechada**: o RLS vem ligado e sem policy, e só o dono do projeto e a service key enxergam as linhas. Para o app usar a tabela, ela precisa, no mesmo SQL que a cria:
 
 ```sql
 alter table minha_tabela enable row level security;
@@ -34,7 +34,7 @@ grant select, insert, update, delete on minha_tabela to authenticated;
 ```
 
 - Dono da linha: `user_id uuid not null default auth.uid()`. O app nunca manda `user_id`.
-- Ids: `uuid primary key default gen_random_uuid()`. Não use `serial`: a sequência não recebe permissão e o `insert` do usuário logado falha.
+- Ids: `uuid primary key default gen_random_uuid()`. Um id sequencial entrega a contagem de linhas e deixa adivinhar o id dos outros.
 - Guarde o SQL em `superdb/*.sql`, idempotente (`create table if not exists`, `drop policy if exists` antes de `create policy`), e rode no **SQL Editor** do painel, ou pelo MCP do SuperDB (tool `superdb_run_sql`).
 - O SQL Editor recusa `BEGIN`/`COMMIT` (ele já roda tudo numa transação) e `SET ROLE`.
 - O SQL Editor recusa o arquivo inteiro se aparecer o nome de um schema de sistema seguido de ponto (`storage.`, `realtime.`, `pg_catalog.`...), **inclusive em comentário**.
