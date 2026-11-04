@@ -1,0 +1,11 @@
+{
+  "slug": "saas",
+  "nome": "SaaS com organizações e assinatura",
+  "frase": "Base de SaaS multiempresa: organizações, membros com papéis, convites por e-mail e o estado da assinatura.",
+  "descricao": "Cada organização tem dono, admins e membros, e o RLS separa os dados por organização. Convites por link valem só para o e-mail convidado. A tabela de assinatura guarda plano e estado e só é gravada pelo seu servidor, a partir do webhook do gateway de cobrança que você escolher.",
+  "etiquetas": ["dev", "negocio", "login"],
+  "tabelas": ["organizacoes", "membros", "convites", "assinaturas"],
+  "versao": "1.0.0",
+  "autor": "SuperDB",
+  "ordem": 6
+}

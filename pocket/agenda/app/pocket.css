@@ -1,0 +1,20 @@
+/* O que os modelos do Pocket usam além do estilo.css comum dos templates. */
+
+.coluna-larga { width: min(100%, 880px); }
+
+.grade { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+
+.linha { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.linha > .entrada { flex: 1 1 160px; }
+
+.tabela { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.tabela th, .tabela td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--borda, #e3e6e4); vertical-align: top; }
+.tabela th { font-weight: 600; }
+
+.etiqueta { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.8rem; background: var(--fundo-suave, #eef3f0); }
+
+.numero-grande { font-size: 2rem; font-weight: 700; line-height: 1.1; }
+
+.pix-copia-cola { width: 100%; font-family: ui-monospace, monospace; font-size: 0.8rem; word-break: break-all; }
+
+.selo-superdb { display: inline-flex; gap: 6px; align-items: center; font-size: 0.8rem; opacity: 0.8; }

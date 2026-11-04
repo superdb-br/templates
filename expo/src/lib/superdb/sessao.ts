@@ -55,10 +55,17 @@ export function criarSuperDB(config: ConfigSuperDB) {
   const ouvintes = new Set<(sessao: Session | null) => void>();
   let renovacaoEmCurso: Promise<Session | null> | null = null;
 
+  // A renovação é DESTE arquivo (trava entre abas, aviso de saída às outras
+  // abas). Desde a 0.3 o SDK também renova sozinho; os dois juntos fariam o
+  // SDK deslogar sem este arquivo avisar ninguém. `autoRefreshToken: false`
+  // devolve o controle para cá. Vai em spread para compilar também contra a
+  // 0.2, que não conhece a opção (e a ignora).
+  const semRenovacaoDoSdk = { autoRefreshToken: false };
   const superdb: SupabaseClient = createClient(config.url, config.anonKey, {
     project: config.projeto,
     storage: armazenamento,
     fetch: config.fetch,
+    ...semRenovacaoDoSdk,
   });
 
   // O SDK pede o token de dados a este método antes de CADA consulta (e antes de

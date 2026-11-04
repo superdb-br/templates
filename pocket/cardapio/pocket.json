@@ -1,0 +1,11 @@
+{
+  "slug": "cardapio",
+  "nome": "Cardápio com pedido no Pix",
+  "frase": "Cardápio digital com pedido e pagamento por Pix direto na conta da loja, sem gateway.",
+  "descricao": "Produtos com foto, categorias e carrinho. O pedido gera o QR Code e o Pix copia e cola com o valor certo, calculado pelo banco a partir dos preços da loja. O pedido fica aguardando até o dono conferir o pagamento e confirmar. Nenhum dinheiro passa pelo SuperDB.",
+  "etiquetas": ["consumo", "negocio", "pix", "login"],
+  "tabelas": ["config_loja", "categorias", "produtos", "pedidos", "itens_pedido"],
+  "versao": "1.0.0",
+  "autor": "SuperDB",
+  "ordem": 2
+}

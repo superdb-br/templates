@@ -11,7 +11,7 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
-    "@superdb/client": "^0.2.2"
+    "@superdb/client": "^0.3.0"
   },
   "devDependencies": {
     "@sveltejs/adapter-static": "^3.0.10",

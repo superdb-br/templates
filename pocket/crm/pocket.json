@@ -1,0 +1,11 @@
+{
+  "slug": "crm",
+  "nome": "CRM simples",
+  "frase": "Contatos, empresas, funil de vendas com etapas, atividades e lembretes, cada pessoa com o próprio CRM.",
+  "descricao": "Um funil pronto (Novo, Contato feito, Proposta, Ganho, Perdido) com o valor somado por etapa, negócios ligados a contatos e empresas, e atividades com data para lembrar. O RLS garante que cada pessoa só vê o que é dela e que um negócio nunca aponta para o contato de outra pessoa.",
+  "etiquetas": ["dev", "negocio", "login"],
+  "tabelas": ["empresas", "contatos", "etapas", "negocios", "atividades"],
+  "versao": "1.0.0",
+  "autor": "SuperDB",
+  "ordem": 7
+}

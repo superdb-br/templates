@@ -82,6 +82,9 @@ async function chamarRenovacao(refreshToken: string): Promise<Resultado> {
   const memoria = new Map<string, string>([
     ['superdb.auth.session', JSON.stringify({ refresh_token: refreshToken, access_token: '', expires_at: 0 })],
   ]);
+  // A renovação é a chamada explícita abaixo, uma por refresh token; o SDK não
+  // renova por conta própria aqui (em spread: compila também contra a 0.2).
+  const semRenovacaoDoSdk = { autoRefreshToken: false };
   const superdb = createClient(config.url, config.anonKey, {
     project: config.projeto,
     storage: {
@@ -89,6 +92,7 @@ async function chamarRenovacao(refreshToken: string): Promise<Resultado> {
       setItem: (chave, valor) => void memoria.set(chave, valor),
       removeItem: (chave) => void memoria.delete(chave),
     },
+    ...semRenovacaoDoSdk,
   });
   try {
     const { data, error } = await superdb.auth.refreshSession();

@@ -1,0 +1,11 @@
+{
+  "slug": "agenda",
+  "nome": "Agenda de salão ou barbearia",
+  "frase": "O cliente marca o horário pelo link, sem criar conta, e o dono vê a agenda do dia.",
+  "descricao": "Serviços com duração e preço, profissionais com expediente por dia da semana e horários livres calculados pelo banco, sem dois clientes no mesmo horário. O cliente informa só nome e telefone; o dono entra com login, confirma, cancela e apaga o agendamento quando quiser.",
+  "etiquetas": ["consumo", "negocio", "login"],
+  "tabelas": ["saloes", "servicos", "profissionais", "horarios", "agendamentos"],
+  "versao": "1.0.0",
+  "autor": "SuperDB",
+  "ordem": 1
+}

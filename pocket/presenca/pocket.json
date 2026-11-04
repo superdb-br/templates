@@ -1,0 +1,11 @@
+{
+  "slug": "presenca",
+  "nome": "Confirmação de presença",
+  "frase": "Convite por link para o convidado confirmar presença sem criar conta, com totais e lista em CSV.",
+  "descricao": "O anfitrião cria o evento com data e local e manda o link. O convidado informa o nome, quantas pessoas vão e um recado. O anfitrião vê quantas pessoas confirmaram, encerra as respostas quando quiser, baixa a lista em CSV e apaga qualquer resposta.",
+  "etiquetas": ["consumo", "login"],
+  "tabelas": ["eventos", "convidados_resposta"],
+  "versao": "1.0.0",
+  "autor": "SuperDB",
+  "ordem": 3
+}

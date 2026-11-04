@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@superdb/client": "^0.2.2",
+    "@superdb/client": "^0.3.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },

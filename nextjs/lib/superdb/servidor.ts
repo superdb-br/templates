@@ -21,7 +21,11 @@ export async function superdbDoServidor() {
     gravar: (nome, valor) => pote.set(nome, valor, OPCOES_DO_COOKIE),
     apagar: (nome) => pote.delete(nome),
   });
-  return createClient(config.url, config.anonKey, { project: config.projeto, storage: armazenamento });
+  // Quem renova é o proxy.ts (renovar.ts): aqui, renovar trocaria o refresh
+  // token sem poder regravar o cookie, e o próximo pedido cairia como reuso.
+  // Em spread para compilar também contra a 0.2, que não tem a opção.
+  const semRenovacaoDoSdk = { autoRefreshToken: false };
+  return createClient(config.url, config.anonKey, { project: config.projeto, storage: armazenamento, ...semRenovacaoDoSdk });
 }
 
 /** Quem está logado nesta requisição, ou `null`. */

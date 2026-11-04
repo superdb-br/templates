@@ -78,7 +78,7 @@ html/
 
 ```html
 <script type="importmap">
-  { "imports": { "@superdb/client": "https://esm.sh/@superdb/client@0.2.2" } }
+  { "imports": { "@superdb/client": "https://esm.sh/@superdb/client@0.3.0" } }
 </script>
 ```
 
