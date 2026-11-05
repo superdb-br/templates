@@ -24,12 +24,14 @@ export default async function PaginaPedido({ params }: { params: Promise<{ id: s
   if (!pedido) notFound();
 
   return (
-    <>
+    <div className="publico">
       <Cabecalho titulo={pedido.loja.nome} />
       <section className="cartao">
         <h1 className="titulo">{STATUS[pedido.status] ?? pedido.status}</h1>
         <ul className="lista">
-          {pedido.itens.map((i, n) => <li key={n}>{i.quantidade}× {i.nome} · {reais(i.preco_centavos * i.quantidade)}</li>)}
+          {pedido.itens.map((i, n) => (
+            <li key={n} className="linha"><span>{i.quantidade}× {i.nome}</span><strong>{reais(i.preco_centavos * i.quantidade)}</strong></li>
+          ))}
         </ul>
         {pedido.status === 'aguardando' && (
           <PagarComPix
@@ -42,6 +44,6 @@ export default async function PaginaPedido({ params }: { params: Promise<{ id: s
         )}
         <p className="dica">Guarde este endereço para acompanhar o pedido.</p>
       </section>
-    </>
+    </div>
   );
 }

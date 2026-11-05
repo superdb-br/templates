@@ -3,9 +3,27 @@
   "nome": "Agenda de salão ou barbearia",
   "frase": "O cliente marca o horário pelo link, sem criar conta, e o dono vê a agenda do dia.",
   "descricao": "Serviços com duração e preço, profissionais com expediente por dia da semana e horários livres calculados pelo banco, sem dois clientes no mesmo horário. O cliente informa só nome e telefone; o dono entra com login, confirma, cancela e apaga o agendamento quando quiser.",
-  "etiquetas": ["consumo", "negocio", "login"],
-  "tabelas": ["saloes", "servicos", "profissionais", "horarios", "agendamentos"],
+  "etiquetas": [
+    "consumo",
+    "negocio",
+    "login"
+  ],
+  "tabelas": [
+    "saloes",
+    "servicos",
+    "profissionais",
+    "horarios",
+    "agendamentos"
+  ],
   "versao": "1.0.0",
   "autor": "SuperDB",
-  "ordem": 1
+  "ordem": 1,
+  "cor": "#be185d",
+  "garantias": [
+    "Dois clientes nunca ficam no mesmo horário: o banco recusa a segunda marcação, mesmo que cheguem juntas.",
+    "Os horários livres saem do banco, pelo expediente de cada profissional e pela duração do serviço.",
+    "O cliente marca sem conta, só pela função pública e só no salão do link que recebeu. A chave anon não lê nenhuma tabela.",
+    "Cada dono vê e altera só o próprio salão (RLS em todas as tabelas).",
+    "Apagar o agendamento apaga também o nome e o telefone do cliente."
+  ]
 }

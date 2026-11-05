@@ -3,9 +3,25 @@
   "nome": "Lista de presentes com Pix",
   "frase": "Lista de presentes de casamento, chá ou aniversário paga por Pix direto na conta de quem recebe.",
   "descricao": "Cada presente tem um valor. O convidado escolhe, deixa o nome e um recado e recebe o QR Code e o Pix copia e cola com o valor certo. O item fica escolhido até o dono ver o dinheiro no banco e marcar como recebido. Nenhum gateway e nenhuma taxa do SuperDB.",
-  "etiquetas": ["consumo", "pix", "login"],
-  "tabelas": ["listas", "itens", "contribuicoes"],
+  "etiquetas": [
+    "consumo",
+    "pix",
+    "login"
+  ],
+  "tabelas": [
+    "listas",
+    "itens",
+    "contribuicoes"
+  ],
   "versao": "1.0.0",
   "autor": "SuperDB",
-  "ordem": 4
+  "ordem": 4,
+  "cor": "#0f766e",
+  "garantias": [
+    "Cada presente é escolhido uma vez só: o banco recusa a segunda escolha do mesmo item.",
+    "O valor do Pix sai do banco, não da página: ninguém paga menos mudando o endereço.",
+    "O convidado escolhe sem conta, só pela função pública e só na lista do link. A chave anon não lê nenhuma tabela.",
+    "O dinheiro vai direto para a chave Pix de quem recebe, sem gateway e sem taxa do SuperDB.",
+    "Cada dono vê e altera só a própria lista (RLS em todas as tabelas)."
+  ]
 }

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { exigirSessao, dados } from '../_componentes/sessao';
 import { Cabecalho } from '../_componentes/Cabecalho';
@@ -28,7 +29,7 @@ export default async function Painel({ searchParams }: { searchParams: Promise<{
         {vinculos.length === 0 ? <p className="vazio">Você ainda não faz parte de nenhuma.</p> : (
           <ul className="lista">
             {vinculos.filter((v) => v.organizacoes).map((v) => (
-              <li key={v.organizacoes!.id}><a href={`/org/${v.organizacoes!.id}`}>{v.organizacoes!.nome}</a> <span className="etiqueta">{v.papel}</span></li>
+              <li key={v.organizacoes!.id} className="linha"><Link href={`/org/${v.organizacoes!.id}`}><strong>{v.organizacoes!.nome}</strong></Link> <span className="etiqueta" data-tom={v.papel === 'dono' ? 'destaque' : 'neutro'}>{v.papel}</span></li>
             ))}
           </ul>
         )}

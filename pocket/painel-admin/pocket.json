@@ -3,9 +3,22 @@
   "nome": "Painel administrativo",
   "frase": "Painel interno com papéis de admin e leitor, busca e paginação sobre as tabelas do seu projeto.",
   "descricao": "O dono cadastra o primeiro admin e a equipe entra por convite (link com token, válido só para o e-mail convidado), como admin ou leitor. O painel lista as tabelas do projeto, com busca, paginação, criar, editar e apagar. Ele não fura o RLS: cada tabela mostra o que as policies dela permitem, usando a função papel_no_painel().",
-  "etiquetas": ["dev", "login"],
-  "tabelas": ["perfis_admin", "exemplo_registros"],
+  "etiquetas": [
+    "dev",
+    "login"
+  ],
+  "tabelas": [
+    "perfis_admin",
+    "exemplo_registros"
+  ],
   "versao": "1.0.0",
   "autor": "SuperDB",
-  "ordem": 5
+  "ordem": 5,
+  "cor": "#334155",
+  "garantias": [
+    "Ninguém vira admin sozinho: o primeiro admin é cadastrado pelo dono do projeto, e os outros entram por convite.",
+    "O convite só vale com o token e para o e-mail convidado.",
+    "Leitor só lê: criar, editar e apagar ficam com o admin, e quem decide é o RLS de cada tabela.",
+    "O painel não fura o RLS: cada tabela mostra o que as policies dela permitem. A chave anon não lê nada."
+  ]
 }

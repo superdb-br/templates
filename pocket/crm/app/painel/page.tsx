@@ -31,16 +31,20 @@ export default async function Painel({ searchParams }: { searchParams: Promise<{
 
       <section className="cartao">
         <h1 className="titulo">Funil</h1>
-        <div className="grade">
+        <p className="subtitulo">
+          {reais(negocios.filter((n) => !etapas.find((e) => e.id === n.etapa_id)?.ganho && !etapas.find((e) => e.id === n.etapa_id)?.perdido).reduce((s, n) => s + n.valor_centavos, 0))} em aberto,{' '}
+          {reais(negocios.filter((n) => etapas.find((e) => e.id === n.etapa_id)?.ganho).reduce((s, n) => s + n.valor_centavos, 0))} ganhos.
+        </p>
+        <div className="funil">
           {etapas.map((e) => {
             const daEtapa = negocios.filter((n) => n.etapa_id === e.id);
             return (
               <div key={e.id}>
-                <h2 className="titulo-secao">{e.nome} <span className="etiqueta">{reais(daEtapa.reduce((s, n) => s + n.valor_centavos, 0))}</span></h2>
+                <h2 className="titulo-secao">{e.nome} <span className="etiqueta" data-tom={e.ganho ? 'ok' : e.perdido ? 'neutro' : 'destaque'}>{reais(daEtapa.reduce((s, n) => s + n.valor_centavos, 0))}</span></h2>
                 <ul className="lista">
                   {daEtapa.map((n) => (
                     <li key={n.id}>
-                      <strong>{n.titulo}</strong> · {reais(n.valor_centavos)}{n.contatos && <><br /><span className="dica">{n.contatos.nome}</span></>}
+                      <strong>{n.titulo}</strong><br /><span className="produto-preco">{reais(n.valor_centavos)}</span>{n.contatos && <span className="dica">{n.contatos.nome}</span>}
                       <form className="linha" action={moverNegocio}>
                         <input type="hidden" name="id" value={n.id} />
                         <select className="entrada" name="etapa_id" defaultValue={n.etapa_id} aria-label={`Etapa de ${n.titulo}`}>
@@ -65,12 +69,12 @@ export default async function Painel({ searchParams }: { searchParams: Promise<{
       </section>
 
       <section className="cartao">
-        <h2 className="titulo-secao">Atividades e lembretes</h2>
+        <h2 className="titulo-secao" id="atividades">Atividades e lembretes</h2>
         {atividades.length === 0 ? <p className="vazio">Nada pendente.</p> : (
           <ul className="lista">
             {atividades.map((a) => (
               <li key={a.id} className="linha">
-                <span className={a.lembrar_em && new Date(a.lembrar_em).getTime() < agora ? 'etiqueta' : ''}>{TIPOS[a.tipo]}</span>
+                <span className="etiqueta" data-tom={a.lembrar_em && new Date(a.lembrar_em).getTime() < agora ? 'perigo' : 'destaque'}>{TIPOS[a.tipo]}</span>
                 <span style={{ flex: 1 }}>{a.descricao}{a.negocios && <span className="dica"> · {a.negocios.titulo}</span>}{a.lembrar_em && <span className="dica"> · {quando(a.lembrar_em)}</span>}</span>
                 <form action={concluirAtividade}><input type="hidden" name="id" value={a.id} /><button className="botao botao-secundario botao-pequeno">Feita</button></form>
               </li>
@@ -89,6 +93,7 @@ export default async function Painel({ searchParams }: { searchParams: Promise<{
       <section className="cartao">
         <h2 className="titulo-secao">Contatos</h2>
         <table className="tabela">
+          <thead><tr><th>Nome</th><th>Empresa</th><th>E-mail</th><th>Telefone</th></tr></thead>
           <tbody>{contatos.map((c) => <tr key={c.id}><td>{c.nome}</td><td>{c.empresas?.nome}</td><td>{c.email}</td><td>{c.telefone}</td></tr>)}</tbody>
         </table>
         <form className="linha" action={criarContato}>

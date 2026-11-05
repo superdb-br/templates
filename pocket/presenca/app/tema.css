@@ -1,0 +1,18 @@
+/*
+ * A cor deste app (dourado). O pocket.css usa estas variáveis em botões, links,
+ * seleção e destaques; troque aqui e o app inteiro acompanha.
+ */
+
+:root {
+  --destaque: #a16207;
+  --destaque-forte: #854d0e;
+  --sobre-destaque: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --destaque: #facc15;
+    --destaque-forte: #facc15;
+    --sobre-destaque: #0b0d0c;
+  }
+}

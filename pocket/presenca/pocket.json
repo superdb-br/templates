@@ -3,9 +3,22 @@
   "nome": "Confirmação de presença",
   "frase": "Convite por link para o convidado confirmar presença sem criar conta, com totais e lista em CSV.",
   "descricao": "O anfitrião cria o evento com data e local e manda o link. O convidado informa o nome, quantas pessoas vão e um recado. O anfitrião vê quantas pessoas confirmaram, encerra as respostas quando quiser, baixa a lista em CSV e apaga qualquer resposta.",
-  "etiquetas": ["consumo", "login"],
-  "tabelas": ["eventos", "convidados_resposta"],
+  "etiquetas": [
+    "consumo",
+    "login"
+  ],
+  "tabelas": [
+    "eventos",
+    "convidados_resposta"
+  ],
   "versao": "1.0.0",
   "autor": "SuperDB",
-  "ordem": 3
+  "ordem": 3,
+  "cor": "#a16207",
+  "garantias": [
+    "O convidado responde sem conta, só pela função pública e só no evento do link.",
+    "O convite não mostra quem já respondeu: a lista é só do anfitrião.",
+    "Encerrou as confirmações, o banco não aceita mais resposta.",
+    "Cada anfitrião vê e altera só os próprios eventos (RLS em todas as tabelas). A chave anon não lê nenhuma tabela."
+  ]
 }

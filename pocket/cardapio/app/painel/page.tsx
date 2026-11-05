@@ -1,7 +1,8 @@
+import Link from 'next/link';
 import { exigirSessao, dados } from '../_componentes/sessao';
 import { Cabecalho } from '../_componentes/Cabecalho';
 import { reais } from '@/lib/pix/brcode';
-import { STATUS } from '@/lib/modelo';
+import { STATUS, TOM, telefone } from '@/lib/modelo';
 import { alternarProduto, apagarPedido, criarCategoria, criarLoja, criarProduto, mudarStatus, salvarPix } from './acoes';
 
 type Loja = { id: string; nome: string; codigo_publico: string; chave_pix: string | null; nome_recebedor: string | null; cidade: string | null; aberta: boolean };
@@ -49,18 +50,27 @@ export default async function Painel({ searchParams }: { searchParams: Promise<{
 
       <section className="cartao">
         <h1 className="titulo">Pedidos</h1>
-        <p className="dica">Link do cardápio: <a href={`/c/${loja.codigo_publico}`}>/c/{loja.codigo_publico}</a></p>
+        <p className="dica">
+          Link do cardápio: <Link href={`/c/${loja.codigo_publico}`}>/c/{loja.codigo_publico}</Link>
+          {' · '}{loja.aberta ? 'recebendo pedidos' : 'fechada para pedidos'}
+        </p>
+        <div className="resumo">
+          <div><p className="numero-grande">{pedidos.filter((p) => p.status === 'aguardando').length}</p><p className="dica">esperando o Pix</p></div>
+          <div><p className="numero-grande">{pedidos.filter((p) => p.status === 'confirmado').length}</p><p className="dica">pagos, a preparar</p></div>
+          <div><p className="numero-grande">{reais(pedidos.filter((p) => p.status !== 'cancelado').reduce((s, p) => s + p.total_centavos, 0))}</p><p className="dica">em pedidos</p></div>
+        </div>
         {pedidos.length === 0 ? <p className="vazio">Nenhum pedido ainda.</p> : (
           <table className="tabela">
-            <thead><tr><th>Quando</th><th>Cliente</th><th>Itens</th><th>Total</th><th>Status</th><th></th></tr></thead>
+            <thead><tr><th>Quando</th><th>Cliente</th><th>Itens</th><th>Total</th><th>Status</th><th><span className="sr-only">Apagar</span></th></tr></thead>
             <tbody>
               {pedidos.map((p) => (
                 <tr key={p.id}>
-                  <td>{new Date(p.criado_em).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' })}</td>
-                  <td>{p.cliente_nome}<br /><a href={`tel:${p.cliente_telefone}`}>{p.cliente_telefone}</a>{p.observacao && <><br /><span className="dica">{p.observacao}</span></>}</td>
+                  <td>{new Date(p.criado_em).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</td>
+                  <td>{p.cliente_nome}<br /><a href={`tel:${p.cliente_telefone}`}>{telefone(p.cliente_telefone)}</a>{p.observacao && <><br /><span className="dica">{p.observacao}</span></>}</td>
                   <td>{p.itens_pedido.map((i) => `${i.quantidade}× ${i.nome}`).join(', ')}</td>
-                  <td>{reais(p.total_centavos)}</td>
+                  <td><strong>{reais(p.total_centavos)}</strong></td>
                   <td>
+                    <span className="etiqueta" data-tom={TOM[p.status]}>{STATUS[p.status] ?? p.status}</span>
                     <form className="linha" action={mudarStatus}>
                       <input type="hidden" name="id" value={p.id} />
                       <select className="entrada" name="status" defaultValue={p.status}>
@@ -69,7 +79,7 @@ export default async function Painel({ searchParams }: { searchParams: Promise<{
                       <button className="botao botao-secundario botao-pequeno" type="submit">Salvar</button>
                     </form>
                   </td>
-                  <td><form action={apagarPedido}><input type="hidden" name="id" value={p.id} /><button className="botao botao-secundario botao-pequeno" title="Apaga também o nome e o telefone do cliente">Apagar</button></form></td>
+                  <td><form action={apagarPedido}><input type="hidden" name="id" value={p.id} /><button className="apagar" aria-label={`Apagar o pedido de ${p.cliente_nome}`} title="Apaga também o nome e o telefone do cliente">×</button></form></td>
                 </tr>
               ))}
             </tbody>

@@ -25,11 +25,12 @@ export default async function PaginaCardapio({ params, searchParams }: { params:
   ].filter((g) => g.produtos.length > 0);
 
   return (
-    <>
+    <div className="publico">
       <Cabecalho titulo={cardapio.loja.nome} />
       <form className="cartao formulario" action={pedir}>
         <input type="hidden" name="codigo" value={codigo} />
         <h1 className="titulo">Cardápio</h1>
+        <p className="subtitulo">Escolha as quantidades, deixe o nome e o telefone e pague com Pix na hora.</p>
         {!cardapio.loja.aberta && <p className="mensagem mensagem-aviso">A loja não está recebendo pedidos agora.</p>}
         {erro && <p className="mensagem mensagem-erro" role="alert">{erro}</p>}
         {grupos.map((g) => (
@@ -37,15 +38,16 @@ export default async function PaginaCardapio({ params, searchParams }: { params:
             <h2 className="titulo-secao">{g.nome}</h2>
             <ul className="lista">
               {g.produtos.map((p) => (
-                <li key={p.id} className="linha">
+                <li key={p.id} className="produto" style={p.foto_url ? undefined : { gridTemplateColumns: '1fr auto' }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  {p.foto_url && <img src={p.foto_url} alt="" width={56} height={56} style={{ objectFit: 'cover', borderRadius: 8 }} />}
-                  <span style={{ flex: 1 }}>
-                    <strong>{p.nome}</strong> · {reais(p.preco_centavos)}
-                    {p.descricao && <><br /><span className="dica">{p.descricao}</span></>}
+                  {p.foto_url && <img src={p.foto_url} alt="" width={64} height={64} />}
+                  <span>
+                    <span className="produto-nome">{p.nome}</span>
+                    {p.descricao && <span className="dica">{p.descricao}</span>}
+                    <span className="produto-preco">{reais(p.preco_centavos)}</span>
                   </span>
                   <label className="sr-only" htmlFor={`qtd-${p.id}`}>Quantidade de {p.nome}</label>
-                  <input id={`qtd-${p.id}`} className="entrada" style={{ maxWidth: 80 }} type="number" min={0} max={99} defaultValue={0} name={`qtd:${p.id}`} />
+                  <input id={`qtd-${p.id}`} className="entrada" type="number" min={0} max={99} defaultValue={0} name={`qtd:${p.id}`} />
                 </li>
               ))}
             </ul>
@@ -57,6 +59,6 @@ export default async function PaginaCardapio({ params, searchParams }: { params:
         <p className="dica">O nome e o telefone vão só para a loja, para combinar a entrega.</p>
         <button className="botao" type="submit" disabled={!cardapio.loja.aberta}>Fazer pedido e pagar com Pix</button>
       </form>
-    </>
+    </div>
   );
 }

@@ -32,12 +32,12 @@ export default async function PaginaConvite({ params, searchParams }: { params: 
   if (!convite) notFound();
 
   return (
-    <>
+    <div className="publico">
       <Cabecalho titulo={convite.titulo} />
       <section className="cartao">
         <h1 className="titulo">{convite.titulo}</h1>
         <p className="subtitulo">{quando(convite.quando)}{convite.local ? ` · ${convite.local}` : ''}</p>
-        {convite.descricao && <p>{convite.descricao}</p>}
+        {convite.descricao && <p className="dica" style={{ fontSize: 15, marginTop: 14 }}>{convite.descricao}</p>}
         {busca.respondido ? (
           <p className="mensagem">{busca.respondido === 'sim' ? 'Presença confirmada. Até lá!' : 'Resposta registrada. Obrigado por avisar!'}</p>
         ) : !convite.aceita_respostas ? (
@@ -49,8 +49,8 @@ export default async function PaginaConvite({ params, searchParams }: { params: 
             <label className="campo"><span className="rotulo">Seu nome</span><input className="entrada" name="nome" required maxLength={120} autoComplete="name" /></label>
             <fieldset className="linha">
               <legend className="rotulo">Você vai?</legend>
-              <label><input type="radio" name="vai" value="sim" defaultChecked /> Vou</label>
-              <label><input type="radio" name="vai" value="nao" /> Não vou</label>
+              <label className="etiqueta"><input type="radio" name="vai" value="sim" defaultChecked /> Vou</label>
+              <label className="etiqueta"><input type="radio" name="vai" value="nao" /> Não vou</label>
             </fieldset>
             <label className="campo"><span className="rotulo">Quantas pessoas (contando você)</span><input className="entrada" name="quantidade" type="number" min={1} max={20} defaultValue={1} /></label>
             <label className="campo"><span className="rotulo">Recado (opcional)</span><textarea className="entrada" name="recado" maxLength={500} rows={2} /></label>
@@ -58,6 +58,6 @@ export default async function PaginaConvite({ params, searchParams }: { params: 
           </form>
         )}
       </section>
-    </>
+    </div>
   );
 }

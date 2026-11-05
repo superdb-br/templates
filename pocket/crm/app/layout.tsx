@@ -3,11 +3,14 @@ import type { ReactNode } from 'react';
 import { SeloSuperDB } from './_componentes/SeloSuperDB';
 import './estilo.css';
 import './pocket.css';
+import './tema.css';
+// Importado (e não "/icone.svg") para o endereço seguir o basePath.
+import icone from '@/public/icone.svg';
 
 export const metadata: Metadata = {
   title: 'CRM · modelo do Pocket SuperDB',
   description: 'CRM simples: contatos, empresas, funil, atividades e lembretes.',
-  icons: { icon: '/favicon.svg' },
+  icons: { icon: icone.src },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

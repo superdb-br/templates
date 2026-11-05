@@ -3,9 +3,26 @@
   "nome": "CRM simples",
   "frase": "Contatos, empresas, funil de vendas com etapas, atividades e lembretes, cada pessoa com o próprio CRM.",
   "descricao": "Um funil pronto (Novo, Contato feito, Proposta, Ganho, Perdido) com o valor somado por etapa, negócios ligados a contatos e empresas, e atividades com data para lembrar. O RLS garante que cada pessoa só vê o que é dela e que um negócio nunca aponta para o contato de outra pessoa.",
-  "etiquetas": ["dev", "negocio", "login"],
-  "tabelas": ["empresas", "contatos", "etapas", "negocios", "atividades"],
+  "etiquetas": [
+    "dev",
+    "negocio",
+    "login"
+  ],
+  "tabelas": [
+    "empresas",
+    "contatos",
+    "etapas",
+    "negocios",
+    "atividades"
+  ],
   "versao": "1.0.0",
   "autor": "SuperDB",
-  "ordem": 7
+  "ordem": 7,
+  "cor": "#1d4ed8",
+  "garantias": [
+    "Cada pessoa vê só o próprio CRM: contatos, empresas, negócios e atividades (RLS em todas as tabelas).",
+    "Um negócio nunca aponta para o contato ou a empresa de outra pessoa: o banco recusa a ligação.",
+    "O funil padrão (Novo, Contato feito, Proposta, Ganho, Perdido) é criado no primeiro acesso, uma vez só.",
+    "A chave anon não lê nenhuma tabela."
+  ]
 }

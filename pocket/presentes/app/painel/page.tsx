@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { exigirSessao, dados } from '../_componentes/sessao';
 import { Cabecalho } from '../_componentes/Cabecalho';
 import { reais } from '@/lib/pix/brcode';
@@ -38,18 +39,23 @@ export default async function Painel({ searchParams }: { searchParams: Promise<{
       {erro && <p className="mensagem mensagem-erro mensagem-solta">{erro}</p>}
       <section className="cartao">
         <h1 className="titulo">Presentes</h1>
-        <p className="dica">Link da lista: <a href={`/l/${lista.codigo_publico}`}>/l/{lista.codigo_publico}</a> · recebido até agora: {reais(recebido)}</p>
+        <p className="dica">Link da lista: <Link href={`/l/${lista.codigo_publico}`}>/l/{lista.codigo_publico}</Link></p>
+        <div className="resumo">
+          <div><p className="numero-grande">{reais(recebido)}</p><p className="dica">recebido até agora</p></div>
+          <div><p className="numero-grande">{itens.filter((i) => i.status === 'declarado').length}</p><p className="dica">escolhidos, a conferir no banco</p></div>
+          <div><p className="numero-grande">{itens.filter((i) => i.status === 'disponivel').length}</p><p className="dica">ainda disponíveis</p></div>
+        </div>
         <table className="tabela">
           <thead><tr><th>Presente</th><th>Valor</th><th>Quem deu</th><th>Status</th></tr></thead>
           <tbody>
             {itens.map((i) => (
               <tr key={i.id}>
                 <td>{i.nome}</td>
-                <td>{reais(i.valor_centavos)}</td>
+                <td><strong>{reais(i.valor_centavos)}</strong></td>
                 <td>
                   {i.contribuicoes.map((c) => (
                     <div key={c.id} className="linha">
-                      <span>{c.nome}{c.recado ? `: ${c.recado}` : ''}</span>
+                      <span>{c.nome}{c.recado && <span className="dica">, {c.recado}</span>}</span>
                       <form action={apagarContribuicao}><input type="hidden" name="id" value={c.id} /><button className="apagar" aria-label={`Apagar ${c.nome}`}>×</button></form>
                     </div>
                   ))}

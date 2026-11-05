@@ -21,11 +21,21 @@ export interface Manifesto {
   versao: string;
   autor: string;
   ordem: number;
+  /** A cor de destaque do app (a mesma do app/tema.css), em #rrggbb: cards e capas da vitrine. */
+  cor: string;
+  /** Selo "Novo" na vitrine. */
+  novo: boolean;
+  /** "O que vem pronto": o que o BANCO garante (cada frase provada em tests/sql/pocket-<modelo>.sql). */
+  garantias: string[];
+  /** Endereço da demo ao vivo (https). Sem ele, a página do modelo esconde o "Ver a demo ao vivo". */
+  demo_url: string | null;
 }
 
 export const SLUG_VALIDO = /^[a-z0-9][a-z0-9-]{0,38}[a-z0-9]$/;
 const TABELA_VALIDA = /^[a-z_][a-z0-9_]{0,62}$/;
 const VERSAO_VALIDA = /^\d+\.\d+\.\d+$/;
+const COR_VALIDA = /^#[0-9a-f]{6}$/;
+const DEMO_VALIDA = /^https:\/\/[a-z0-9.-]+(\/[A-Za-z0-9._~\/-]*)?$/;
 
 const RAIZ_PADRAO = import.meta.dir;
 
@@ -56,6 +66,17 @@ export function validarManifesto(entrada: unknown): Manifesto {
   if (typeof ordem !== 'number' || !Number.isInteger(ordem) || ordem < 1) {
     throw new Error('manifesto: campo ordem precisa ser inteiro a partir de 1');
   }
+  const cor = textoNaoVazio(m, 'cor');
+  if (!COR_VALIDA.test(cor)) throw new Error(`manifesto: campo cor precisa ser #rrggbb em minúsculas (${cor})`);
+  if (m.novo !== undefined && typeof m.novo !== 'boolean') throw new Error('manifesto: campo novo precisa ser true ou false');
+  const garantias = m.garantias ?? [];
+  if (!Array.isArray(garantias) || garantias.some((g) => typeof g !== 'string' || !g.trim())) {
+    throw new Error('manifesto: campo garantias precisa ser uma lista de frases');
+  }
+  const demo = m.demo_url ?? null;
+  if (demo !== null && (typeof demo !== 'string' || !DEMO_VALIDA.test(demo))) {
+    throw new Error('manifesto: campo demo_url precisa ser um endereço https simples (ou ficar de fora)');
+  }
   return {
     slug,
     nome: textoNaoVazio(m, 'nome'),
@@ -66,6 +87,10 @@ export function validarManifesto(entrada: unknown): Manifesto {
     versao,
     autor: textoNaoVazio(m, 'autor'),
     ordem,
+    cor,
+    novo: m.novo === true,
+    garantias: garantias as string[],
+    demo_url: demo as string | null,
   };
 }
 

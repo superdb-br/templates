@@ -19,7 +19,7 @@ export async function PagarComPix({ chave, nome, cidade, valorCentavos, txid }: 
   return (
     <div className="formulario">
       <p className="numero-grande">{reais(valorCentavos)}</p>
-      <div aria-label="QR Code do Pix" dangerouslySetInnerHTML={{ __html: svg }} />
+      <div className="pix-qr" role="img" aria-label="QR Code do Pix" dangerouslySetInnerHTML={{ __html: svg }} />
       <label className="campo">
         <span className="rotulo">Pix copia e cola</span>
         <textarea className="entrada pix-copia-cola" readOnly rows={4} value={codigo} />

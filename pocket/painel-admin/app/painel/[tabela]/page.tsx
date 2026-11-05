@@ -1,7 +1,8 @@
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Cabecalho } from '../../_componentes/Cabecalho';
 import { traduzirErroDeDados } from '@/lib/superdb/erros';
-import { AUTOMATICAS, POR_PAGINA, mostrar, nomeValido } from '@/lib/modelo';
+import { AUTOMATICAS, POR_PAGINA, exibir, mostrar, nomeValido } from '@/lib/modelo';
 import { contextoDoPainel } from '../painel';
 import { apagar, criar, editar } from './acoes';
 
@@ -30,7 +31,7 @@ export default async function PaginaTabela({ params, searchParams }: { params: P
     <>
       <Cabecalho email={sessao.user?.email} />
       <section className="cartao">
-        <p className="dica"><a href="/painel">Tabelas</a> / {tabela}</p>
+        <p className="dica"><Link href="/painel">Tabelas</Link> / {tabela}</p>
         <h1 className="titulo">{tabela}</h1>
         {erro && <p className="mensagem mensagem-erro">{erro}</p>}
         {colunas.length > 0 && (
@@ -43,16 +44,16 @@ export default async function PaginaTabela({ params, searchParams }: { params: P
           </form>
         )}
         {linhas.length === 0 ? <p className="vazio">Nada para mostrar.</p> : (
-          <div style={{ overflowX: 'auto' }}>
+          <div className="rolagem">
             <table className="tabela">
               <thead><tr>{colunas.map((c) => <th key={c}>{c}</th>)}{papel === 'admin' && temId && <th></th>}</tr></thead>
               <tbody>
                 {linhas.map((l, i) => (
                   <tr key={temId ? String(l.id) : i}>
-                    {colunas.map((c) => <td key={c}>{mostrar(l[c])}</td>)}
+                    {colunas.map((c) => <td key={c} title={mostrar(l[c])}>{exibir(l[c])}</td>)}
                     {papel === 'admin' && temId && (
                       <td className="linha">
-                        <a className="botao botao-secundario botao-pequeno" href={`/painel/${tabela}?editar=${l.id}&pagina=${pagina}`}>Editar</a>
+                        <Link className="botao botao-secundario botao-pequeno" href={`/painel/${tabela}?editar=${l.id}&pagina=${pagina}`}>Editar</Link>
                         <form action={apagar}><input type="hidden" name="tabela" value={tabela} /><input type="hidden" name="id" value={String(l.id)} /><button className="apagar" aria-label="Apagar">×</button></form>
                       </td>
                     )}

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { Cabecalho } from '../../_componentes/Cabecalho';
@@ -40,7 +41,7 @@ export default async function Equipe({ searchParams }: { searchParams: Promise<{
     <>
       <Cabecalho email={sessao.user?.email} />
       <section className="cartao">
-        <p className="dica"><a href="/painel">Tabelas</a> / equipe</p>
+        <p className="dica"><Link href="/painel">Tabelas</Link> / equipe</p>
         <h1 className="titulo">Equipe do painel</h1>
         {erro && <p className="mensagem mensagem-erro">{erro}</p>}
         <table className="tabela">

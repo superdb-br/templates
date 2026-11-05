@@ -15,6 +15,20 @@ export const ERROS: Record<string, string> = {
   horario_indisponivel: 'Esse horário acabou de ser ocupado ou não está mais livre. Escolha outro.',
 };
 
+/** Os status de um horário, com o nome na tela e o tom da etiqueta. */
+export const STATUS: Record<string, { nome: string; tom: 'destaque' | 'ok' | 'neutro' | 'perigo' }> = {
+  marcado: { nome: 'Marcado', tom: 'destaque' },
+  confirmado: { nome: 'Confirmado', tom: 'ok' },
+  concluido: { nome: 'Concluído', tom: 'neutro' },
+  cancelado: { nome: 'Cancelado', tom: 'perigo' },
+};
+
+/** +5511900000101 → (11) 90000-0101, para ler; o link tel: usa o número cru. */
+export function telefone(t: string) {
+  const m = /^\+55(\d{2})(\d{4,5})(\d{4})$/.exec(t);
+  return m ? `(${m[1]}) ${m[2]}-${m[3]}` : t;
+}
+
 export function reais(centavos: number) {
   return (centavos / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }

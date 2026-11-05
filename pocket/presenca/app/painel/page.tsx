@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { exigirSessao, dados } from '../_componentes/sessao';
 import { Cabecalho } from '../_componentes/Cabecalho';
 import { quando } from '@/lib/modelo';
@@ -25,14 +26,14 @@ export default async function Painel({ searchParams }: { searchParams: Promise<{
         <section className="cartao">
           <h1 className="titulo">{evento.titulo}</h1>
           <p className="subtitulo">{quando(evento.quando)}{evento.local ? ` · ${evento.local}` : ''}</p>
-          <p className="dica">Link do convite: <a href={`/e/${evento.codigo_publico}`}>/e/{evento.codigo_publico}</a></p>
-          <div className="grade">
+          <p className="dica">Link do convite: <Link href={`/e/${evento.codigo_publico}`}>/e/{evento.codigo_publico}</Link></p>
+          <div className="resumo">
             <div><p className="numero-grande">{vao.reduce((s, r) => s + r.quantidade, 0)}</p><p className="dica">pessoas confirmadas</p></div>
             <div><p className="numero-grande">{vao.length}</p><p className="dica">respostas &quot;vou&quot;</p></div>
             <div><p className="numero-grande">{respostas.length - vao.length}</p><p className="dica">não vão</p></div>
           </div>
           <div className="acoes">
-            <a className="botao botao-secundario botao-pequeno" href={`/painel/csv/${evento.id}`}>Baixar CSV</a>
+            <Link prefetch={false} className="botao botao-secundario botao-pequeno" href={`/painel/csv/${evento.id}`}>Baixar CSV</Link>
             <form action={alternarRespostas}>
               <input type="hidden" name="id" value={evento.id} />
               <input type="hidden" name="aceita" value={String(!evento.aceita_respostas)} />
@@ -41,11 +42,11 @@ export default async function Painel({ searchParams }: { searchParams: Promise<{
           </div>
           {respostas.length === 0 ? <p className="vazio">Ninguém respondeu ainda.</p> : (
             <table className="tabela">
-              <thead><tr><th>Nome</th><th>Vai?</th><th>Pessoas</th><th>Recado</th><th></th></tr></thead>
+              <thead><tr><th>Nome</th><th>Resposta</th><th>Pessoas</th><th>Recado</th><th><span className="sr-only">Apagar</span></th></tr></thead>
               <tbody>
                 {respostas.map((r) => (
                   <tr key={r.id}>
-                    <td>{r.nome}</td><td>{r.vai ? 'Sim' : 'Não'}</td><td>{r.quantidade}</td><td>{r.recado}</td>
+                    <td>{r.nome}</td><td><span className="etiqueta" data-tom={r.vai ? 'ok' : 'neutro'}>{r.vai ? 'Vai' : 'Não vai'}</span></td><td>{r.vai ? r.quantidade : ''}</td><td><span className="dica">{r.recado}</span></td>
                     <td><form action={apagarResposta}><input type="hidden" name="id" value={r.id} /><input type="hidden" name="evento" value={evento.id} /><button className="apagar" aria-label={`Apagar a resposta de ${r.nome}`}>×</button></form></td>
                   </tr>
                 ))}
@@ -58,7 +59,7 @@ export default async function Painel({ searchParams }: { searchParams: Promise<{
       {eventos.length > 1 && (
         <section className="cartao">
           <h2 className="titulo-secao">Seus eventos</h2>
-          <ul className="lista">{eventos.map((e) => <li key={e.id}><a href={`/painel?evento=${e.id}`}>{e.titulo}</a> · {quando(e.quando)}</li>)}</ul>
+          <ul className="lista">{eventos.map((e) => <li key={e.id}><Link href={`/painel?evento=${e.id}`}>{e.titulo}</Link> · {quando(e.quando)}</li>)}</ul>
         </section>
       )}
 

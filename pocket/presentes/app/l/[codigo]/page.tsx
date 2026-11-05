@@ -31,7 +31,7 @@ export default async function PaginaLista({ params, searchParams }: { params: Pr
   if (!lista) notFound();
 
   return (
-    <>
+    <div className="publico">
       <Cabecalho titulo={lista.lista.titulo} />
       <section className="cartao">
         <h1 className="titulo">{lista.lista.titulo}</h1>
@@ -39,7 +39,7 @@ export default async function PaginaLista({ params, searchParams }: { params: Pr
         {erro && <p className="mensagem mensagem-erro" role="alert">{erro}</p>}
         <div className="grade">
           {lista.itens.map((i) => (
-            <form key={i.id} className="cartao formulario" action={escolher}>
+            <form key={i.id} className="presente" action={escolher} data-escolhido={i.disponivel ? undefined : ''}>
               <input type="hidden" name="codigo" value={codigo} />
               <input type="hidden" name="item" value={i.id} />
               <strong>{i.nome}</strong>
@@ -52,12 +52,12 @@ export default async function PaginaLista({ params, searchParams }: { params: Pr
                   <button className="botao botao-pequeno" type="submit">Dar este presente</button>
                 </>
               ) : (
-                <span className="etiqueta">já escolhido</span>
+                <span className="etiqueta" data-tom="neutro">Já escolhido</span>
               )}
             </form>
           ))}
         </div>
       </section>
-    </>
+    </div>
   );
 }

@@ -1,6 +1,7 @@
+import Link from 'next/link';
 import { exigirSessao, dados } from '../_componentes/sessao';
 import { Cabecalho } from '../_componentes/Cabecalho';
-import { DIAS, FUSO, hora, hoje, reais } from '@/lib/modelo';
+import { DIAS, FUSO, STATUS, hora, hoje, reais, telefone } from '@/lib/modelo';
 import { apagarAgendamento, apagarItem, criarHorario, criarProfissional, criarSalao, criarServico, mudarStatus } from './acoes';
 
 type Salao = { id: string; nome: string; codigo_publico: string };
@@ -9,7 +10,7 @@ type Profissional = { id: string; nome: string };
 type Horario = { id: string; profissional_id: string; dia_semana: number; abre: string; fecha: string };
 type Agendamento = {
   id: string; inicio: string; status: string; cliente_nome: string; cliente_telefone: string;
-  servicos: { nome: string } | null; profissionais: { nome: string } | null;
+  servicos: { nome: string; preco_centavos: number } | null; profissionais: { nome: string } | null;
 };
 
 export default async function Painel({ searchParams }: { searchParams: Promise<{ dia?: string; erro?: string }> }) {
@@ -48,7 +49,7 @@ export default async function Painel({ searchParams }: { searchParams: Promise<{
     dados<Agendamento[]>(
       superdb
         .from('agendamentos')
-        .select('id, inicio, status, cliente_nome, cliente_telefone, servicos(nome), profissionais(nome)')
+        .select('id, inicio, status, cliente_nome, cliente_telefone, servicos(nome, preco_centavos), profissionais(nome)')
         .eq('salao_id', salao.id)
         .gte('inicio', `${dia}T00:00:00-03:00`)
         .lt('inicio', `${dia}T23:59:59-03:00`)
@@ -56,6 +57,8 @@ export default async function Painel({ searchParams }: { searchParams: Promise<{
     ),
   ]);
   const nomeDe = new Map(profissionais.map((p) => [p.id, p.nome]));
+  const ativos = agenda.filter((a) => a.status !== 'cancelado');
+  const previsto = ativos.reduce((s, a) => s + (a.servicos?.preco_centavos ?? 0), 0);
 
   return (
     <>
@@ -63,46 +66,51 @@ export default async function Painel({ searchParams }: { searchParams: Promise<{
       {erro && <p className="mensagem mensagem-erro mensagem-solta">{erro}</p>}
 
       <section className="cartao">
-        <h1 className="titulo">Agenda de {new Date(`${dia}T12:00:00-03:00`).toLocaleDateString('pt-BR', { timeZone: FUSO, dateStyle: 'full' })}</h1>
-        <form className="linha" method="get">
-          <input className="entrada" type="date" name="dia" defaultValue={dia} />
-          <button className="botao botao-secundario botao-pequeno" type="submit">Ver o dia</button>
-        </form>
+        <div className="topo">
+          <h1 className="titulo">Agenda de {new Date(`${dia}T12:00:00-03:00`).toLocaleDateString('pt-BR', { timeZone: FUSO, dateStyle: 'full' })}</h1>
+          <form className="linha" method="get">
+            <input className="entrada" type="date" name="dia" defaultValue={dia} aria-label="Dia" />
+            <button className="botao botao-secundario botao-pequeno" type="submit">Ver o dia</button>
+          </form>
+        </div>
         <p className="dica">
-          Link para os clientes marcarem: <a href={`/s/${salao.codigo_publico}`}>/s/{salao.codigo_publico}</a>
+          Mande este link para os clientes marcarem: <Link href={`/s/${salao.codigo_publico}`}>/s/{salao.codigo_publico}</Link>
         </p>
+        <div className="resumo">
+          <div><p className="numero-grande">{ativos.length}</p><p className="dica">horários no dia</p></div>
+          <div><p className="numero-grande">{agenda.filter((a) => a.status === 'confirmado').length}</p><p className="dica">confirmados</p></div>
+          <div><p className="numero-grande">{reais(previsto)}</p><p className="dica">previsto em serviços</p></div>
+        </div>
         {agenda.length === 0 ? (
           <p className="vazio">Nenhum horário marcado neste dia.</p>
         ) : (
           <table className="tabela">
             <thead>
-              <tr><th>Hora</th><th>Cliente</th><th>Serviço</th><th>Status</th><th></th></tr>
+              <tr><th>Hora</th><th>Cliente</th><th>Serviço</th><th>Status</th><th><span className="sr-only">Mudar ou apagar</span></th></tr>
             </thead>
             <tbody>
               {agenda.map((a) => (
                 <tr key={a.id}>
                   <td>{hora(a.inicio)}</td>
-                  <td>{a.cliente_nome}<br /><a href={`tel:${a.cliente_telefone}`}>{a.cliente_telefone}</a></td>
-                  <td>{a.servicos?.nome}<br /><span className="dica">{a.profissionais?.nome}</span></td>
+                  <td>{a.cliente_nome}<br /><a href={`tel:${a.cliente_telefone}`}>{telefone(a.cliente_telefone)}</a></td>
+                  <td>{a.servicos?.nome}<br /><span className="dica">com {a.profissionais?.nome}</span></td>
+                  <td><span className="etiqueta" data-tom={STATUS[a.status]?.tom}>{STATUS[a.status]?.nome ?? a.status}</span></td>
                   <td>
-                    <form className="linha" action={mudarStatus}>
-                      <input type="hidden" name="id" value={a.id} />
-                      <input type="hidden" name="dia" value={dia} />
-                      <select className="entrada" name="status" defaultValue={a.status}>
-                        <option value="marcado">marcado</option>
-                        <option value="confirmado">confirmado</option>
-                        <option value="concluido">concluído</option>
-                        <option value="cancelado">cancelado</option>
-                      </select>
-                      <button className="botao botao-secundario botao-pequeno" type="submit">Salvar</button>
-                    </form>
-                  </td>
-                  <td>
-                    <form action={apagarAgendamento}>
-                      <input type="hidden" name="id" value={a.id} />
-                      <input type="hidden" name="dia" value={dia} />
-                      <button className="botao botao-secundario botao-pequeno" type="submit" title="Apaga também o nome e o telefone do cliente">Apagar</button>
-                    </form>
+                    <div className="linha">
+                      <form className="linha" action={mudarStatus}>
+                        <input type="hidden" name="id" value={a.id} />
+                        <input type="hidden" name="dia" value={dia} />
+                        <select className="entrada" name="status" defaultValue={a.status} aria-label={`Status de ${a.cliente_nome}`}>
+                          {Object.entries(STATUS).map(([v, s]) => <option key={v} value={v}>{s.nome}</option>)}
+                        </select>
+                        <button className="botao botao-secundario botao-pequeno" type="submit">Salvar</button>
+                      </form>
+                      <form action={apagarAgendamento}>
+                        <input type="hidden" name="id" value={a.id} />
+                        <input type="hidden" name="dia" value={dia} />
+                        <button className="apagar" type="submit" aria-label={`Apagar o horário de ${a.cliente_nome}`} title="Apaga também o nome e o telefone do cliente">×</button>
+                      </form>
+                    </div>
                   </td>
                 </tr>
               ))}

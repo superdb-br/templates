@@ -3,9 +3,26 @@
   "nome": "SaaS com organizações e assinatura",
   "frase": "Base de SaaS multiempresa: organizações, membros com papéis, convites por e-mail e o estado da assinatura.",
   "descricao": "Cada organização tem dono, admins e membros, e o RLS separa os dados por organização. Convites por link valem só para o e-mail convidado. A tabela de assinatura guarda plano e estado e só é gravada pelo seu servidor, a partir do webhook do gateway de cobrança que você escolher.",
-  "etiquetas": ["dev", "negocio", "login"],
-  "tabelas": ["organizacoes", "membros", "convites", "assinaturas"],
+  "etiquetas": [
+    "dev",
+    "negocio",
+    "login"
+  ],
+  "tabelas": [
+    "organizacoes",
+    "membros",
+    "convites",
+    "assinaturas"
+  ],
   "versao": "1.0.0",
   "autor": "SuperDB",
-  "ordem": 6
+  "ordem": 6,
+  "cor": "#7e22ce",
+  "garantias": [
+    "Quem não é membro não vê nem mexe na organização (RLS por organização em todas as tabelas).",
+    "O convite vale só para o e-mail convidado, uma vez, por 7 dias.",
+    "Membro comum não convida ninguém nem se promove a admin.",
+    "A assinatura só muda pelo seu servidor, com a chave de serviço (o webhook do gateway). Pelo app, nem o dono altera.",
+    "A chave anon não lê nenhuma tabela."
+  ]
 }

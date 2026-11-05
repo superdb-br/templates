@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { superdbDoServidor } from '@/lib/superdb/servidor';
 import { Cabecalho } from '../../_componentes/Cabecalho';
-import { FUSO, hora, hoje, reais } from '@/lib/modelo';
+import { FUSO, hora, hoje, reais, telefone } from '@/lib/modelo';
 import { marcar } from './acoes';
 
 type AgendaPublica = {
@@ -25,15 +25,19 @@ export default async function MarcarHorario({ params, searchParams }: { params: 
 
   if (busca.marcado) {
     return (
-      <>
+      <div className="publico">
         <Cabecalho titulo={agenda.salao.nome} />
         <section className="cartao">
           <h1 className="titulo">Horário marcado</h1>
           <p className="subtitulo">
-            {new Date(busca.marcado).toLocaleString('pt-BR', { timeZone: FUSO, dateStyle: 'full', timeStyle: 'short' })}. Até lá!
+            {new Date(busca.marcado).toLocaleString('pt-BR', { timeZone: FUSO, dateStyle: 'full', timeStyle: 'short' })}.
           </p>
+          <p className="mensagem mensagem-solta">Até lá! O salão já está vendo o seu horário na agenda.</p>
+          {agenda.salao.telefone && (
+            <p className="dica">Precisa desmarcar? Fale com o salão: <a href={`tel:${agenda.salao.telefone}`}>{telefone(agenda.salao.telefone)}</a>.</p>
+          )}
         </section>
-      </>
+      </div>
     );
   }
 
@@ -48,7 +52,7 @@ export default async function MarcarHorario({ params, searchParams }: { params: 
   }
 
   return (
-    <>
+    <div className="publico">
       <Cabecalho titulo={agenda.salao.nome} />
       <section className="cartao">
         <h1 className="titulo">Marque seu horário</h1>
@@ -108,6 +112,6 @@ export default async function MarcarHorario({ params, searchParams }: { params: 
           </>
         )}
       </section>
-    </>
+    </div>
   );
 }

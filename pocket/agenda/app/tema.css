@@ -1,0 +1,18 @@
+/*
+ * A cor deste app (framboesa). O pocket.css usa estas variáveis em botões, links,
+ * seleção e destaques; troque aqui e o app inteiro acompanha.
+ */
+
+:root {
+  --destaque: #be185d;
+  --destaque-forte: #9d174d;
+  --sobre-destaque: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --destaque: #f472b6;
+    --destaque-forte: #f472b6;
+    --sobre-destaque: #0b0d0c;
+  }
+}

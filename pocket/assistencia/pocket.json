@@ -1,0 +1,31 @@
+{
+  "slug": "assistencia",
+  "nome": "Assistência técnica com nota",
+  "frase": "Ordem de serviço, peças com estoque que nunca fica negativo e a NFS-e da mão de obra emitida ao entregar.",
+  "descricao": "O balcão de uma assistência técnica: clientes, peças e serviços com preço de tabela, ordens de serviço (aberta, em andamento, pronta, entregue) e o estoque das peças. Ao entregar a ordem, o banco baixa as peças numa transação só e o servidor do app emite a NFS-e da mão de obra pelo SuperDB Fiscal. Abaixo do plano Pro a nota sai em homologação, de teste e sem valor fiscal. Só a equipe da loja entra, com papéis de dono, atendente e técnico.",
+  "etiquetas": [
+    "negocio",
+    "login",
+    "pro"
+  ],
+  "tabelas": [
+    "equipe",
+    "clientes",
+    "catalogo",
+    "ordens_servico",
+    "itens_ordem",
+    "movimentos_estoque"
+  ],
+  "versao": "1.0.0",
+  "autor": "SuperDB",
+  "ordem": 8,
+  "cor": "#0369a1",
+  "novo": true,
+  "garantias": [
+    "O estoque nunca fica negativo, para ninguém: é uma regra do banco, não da tela.",
+    "Entregar a ordem baixa as peças, soma os totais e fecha a ordem numa transação só. Faltou peça, nada baixa e a ordem continua aberta.",
+    "O item entra com o preço de tabela do catálogo, e só o dono muda preço, estoque e equipe.",
+    "Ordem entregue não muda mais. Só a NFS-e, gravada pelo servidor, anda.",
+    "Só a equipe da loja vê alguma coisa. A chave anon não lê nada nem chama as funções."
+  ]
+}

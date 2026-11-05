@@ -1,21 +1,69 @@
--- Dados de exemplo do CRM: empresas e contatos fictícios de um dono que não
--- existe (para ver as tabelas cheias no painel do SuperDB). No app, cada pessoa
--- começa com o próprio CRM vazio. Pode rodar de novo.
+-- Dados de exemplo do CRM: empresas, contatos, um funil com negócios em todas as
+-- etapas e atividades com lembrete, de um dono que não existe (para ver as
+-- tabelas cheias no painel do SuperDB). Empresas e pessoas são inventadas e os
+-- e-mails são de um domínio reservado (.example). No app, cada pessoa começa com
+-- o próprio CRM vazio. Pode rodar de novo.
 
 insert into empresas (id, dono_id, nome, site) values
-  ('c2a00000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-00000000d0e0', 'Empresa Exemplo Ltda', 'https://exemplo.example')
+  ('c2a00000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-00000000d0e0', 'Padaria Trigo Fino', 'https://trigofino.example'),
+  ('c2a00000-0000-4000-8000-000000000002', '00000000-0000-4000-8000-00000000d0e0', 'Clínica Sorriso Pleno', 'https://sorrisopleno.example'),
+  ('c2a00000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-00000000d0e0', 'Construtora Alicerce', 'https://alicerce.example'),
+  ('c2a00000-0000-4000-8000-000000000004', '00000000-0000-4000-8000-00000000d0e0', 'Escola de Idiomas Ponte', 'https://ponte.example'),
+  ('c2a00000-0000-4000-8000-000000000005', '00000000-0000-4000-8000-00000000d0e0', 'Mercado Bom Preço', 'https://bompreco.example')
 on conflict (id) do nothing;
 
-insert into contatos (id, dono_id, empresa_id, nome, email) values
+insert into contatos (id, dono_id, empresa_id, nome, email, telefone) values
   ('c2a00000-0000-4000-8000-000000000011', '00000000-0000-4000-8000-00000000d0e0', 'c2a00000-0000-4000-8000-000000000001',
-   'Contato Exemplo', 'contato@exemplo.example')
+   'Sérgio Amaral', 'sergio@trigofino.example', '(31) 90000-0301'),
+  ('c2a00000-0000-4000-8000-000000000012', '00000000-0000-4000-8000-00000000d0e0', 'c2a00000-0000-4000-8000-000000000002',
+   'Dra. Vanessa Lobo', 'vanessa@sorrisopleno.example', '(31) 90000-0302'),
+  ('c2a00000-0000-4000-8000-000000000013', '00000000-0000-4000-8000-00000000d0e0', 'c2a00000-0000-4000-8000-000000000003',
+   'Márcio Tavares', 'compras@alicerce.example', '(31) 90000-0303'),
+  ('c2a00000-0000-4000-8000-000000000014', '00000000-0000-4000-8000-00000000d0e0', 'c2a00000-0000-4000-8000-000000000004',
+   'Priscila Andrade', 'priscila@ponte.example', '(31) 90000-0304'),
+  ('c2a00000-0000-4000-8000-000000000015', '00000000-0000-4000-8000-00000000d0e0', 'c2a00000-0000-4000-8000-000000000005',
+   'Wagner Costa', 'wagner@bompreco.example', '(31) 90000-0305'),
+  ('c2a00000-0000-4000-8000-000000000016', '00000000-0000-4000-8000-00000000d0e0', 'c2a00000-0000-4000-8000-000000000002',
+   'Elaine Rocha', 'recepcao@sorrisopleno.example', '(31) 90000-0306')
 on conflict (id) do nothing;
 
-insert into etapas (id, dono_id, nome, ordem) values
-  ('c2a00000-0000-4000-8000-000000000021', '00000000-0000-4000-8000-00000000d0e0', 'Novo', 1)
+-- O funil padrão (o mesmo que o app cria por criar_etapas_padrao()).
+insert into etapas (id, dono_id, nome, ordem, ganho, perdido) values
+  ('c2a00000-0000-4000-8000-000000000021', '00000000-0000-4000-8000-00000000d0e0', 'Novo', 1, false, false),
+  ('c2a00000-0000-4000-8000-000000000022', '00000000-0000-4000-8000-00000000d0e0', 'Contato feito', 2, false, false),
+  ('c2a00000-0000-4000-8000-000000000023', '00000000-0000-4000-8000-00000000d0e0', 'Proposta', 3, false, false),
+  ('c2a00000-0000-4000-8000-000000000024', '00000000-0000-4000-8000-00000000d0e0', 'Ganho', 4, true, false),
+  ('c2a00000-0000-4000-8000-000000000025', '00000000-0000-4000-8000-00000000d0e0', 'Perdido', 5, false, true)
 on conflict (id) do nothing;
 
 insert into negocios (id, dono_id, titulo, valor_centavos, etapa_id, contato_id, empresa_id) values
-  ('c2a00000-0000-4000-8000-000000000031', '00000000-0000-4000-8000-00000000d0e0', 'Contrato anual de exemplo', 1200000,
-   'c2a00000-0000-4000-8000-000000000021', 'c2a00000-0000-4000-8000-000000000011', 'c2a00000-0000-4000-8000-000000000001')
+  ('c2a00000-0000-4000-8000-000000000031', '00000000-0000-4000-8000-00000000d0e0', 'Sistema de pedidos para as 3 lojas', 1840000,
+   'c2a00000-0000-4000-8000-000000000023', 'c2a00000-0000-4000-8000-000000000011', 'c2a00000-0000-4000-8000-000000000001'),
+  ('c2a00000-0000-4000-8000-000000000032', '00000000-0000-4000-8000-00000000d0e0', 'Agenda online com lembrete', 690000,
+   'c2a00000-0000-4000-8000-000000000022', 'c2a00000-0000-4000-8000-000000000012', 'c2a00000-0000-4000-8000-000000000002'),
+  ('c2a00000-0000-4000-8000-000000000033', '00000000-0000-4000-8000-00000000d0e0', 'Portal do cliente da obra', 3250000,
+   'c2a00000-0000-4000-8000-000000000021', 'c2a00000-0000-4000-8000-000000000013', 'c2a00000-0000-4000-8000-000000000003'),
+  ('c2a00000-0000-4000-8000-000000000034', '00000000-0000-4000-8000-00000000d0e0', 'Matrícula on-line', 980000,
+   'c2a00000-0000-4000-8000-000000000024', 'c2a00000-0000-4000-8000-000000000014', 'c2a00000-0000-4000-8000-000000000004'),
+  ('c2a00000-0000-4000-8000-000000000035', '00000000-0000-4000-8000-00000000d0e0', 'Programa de fidelidade', 1200000,
+   'c2a00000-0000-4000-8000-000000000025', 'c2a00000-0000-4000-8000-000000000015', 'c2a00000-0000-4000-8000-000000000005'),
+  ('c2a00000-0000-4000-8000-000000000036', '00000000-0000-4000-8000-00000000d0e0', 'Cardápio digital do café', 350000,
+   'c2a00000-0000-4000-8000-000000000021', 'c2a00000-0000-4000-8000-000000000011', 'c2a00000-0000-4000-8000-000000000001'),
+  ('c2a00000-0000-4000-8000-000000000037', '00000000-0000-4000-8000-00000000d0e0', 'Painel de estoque', 1500000,
+   'c2a00000-0000-4000-8000-000000000023', 'c2a00000-0000-4000-8000-000000000015', 'c2a00000-0000-4000-8000-000000000005'),
+  ('c2a00000-0000-4000-8000-000000000038', '00000000-0000-4000-8000-00000000d0e0', 'Confirmação de consultas por link', 420000,
+   'c2a00000-0000-4000-8000-000000000022', 'c2a00000-0000-4000-8000-000000000016', 'c2a00000-0000-4000-8000-000000000002')
+on conflict (id) do nothing;
+
+insert into atividades (id, dono_id, negocio_id, contato_id, tipo, descricao, lembrar_em, feita) values
+  ('c2a00000-0000-4000-8000-000000000041', '00000000-0000-4000-8000-00000000d0e0', 'c2a00000-0000-4000-8000-000000000031',
+   'c2a00000-0000-4000-8000-000000000011', 'reuniao', 'Apresentar a proposta revisada para o Sérgio', now() + interval '1 day', false),
+  ('c2a00000-0000-4000-8000-000000000042', '00000000-0000-4000-8000-00000000d0e0', 'c2a00000-0000-4000-8000-000000000032',
+   'c2a00000-0000-4000-8000-000000000012', 'ligacao', 'Ligar para a Dra. Vanessa sobre o lembrete por WhatsApp', now() + interval '3 hours', false),
+  ('c2a00000-0000-4000-8000-000000000043', '00000000-0000-4000-8000-00000000d0e0', 'c2a00000-0000-4000-8000-000000000033',
+   'c2a00000-0000-4000-8000-000000000013', 'email', 'Mandar o escopo do portal e o cronograma', now() + interval '2 days', false),
+  ('c2a00000-0000-4000-8000-000000000044', '00000000-0000-4000-8000-00000000d0e0', 'c2a00000-0000-4000-8000-000000000034',
+   'c2a00000-0000-4000-8000-000000000014', 'nota', 'Contrato assinado. Começa no dia 1º.', null, true),
+  ('c2a00000-0000-4000-8000-000000000045', '00000000-0000-4000-8000-00000000d0e0', 'c2a00000-0000-4000-8000-000000000037',
+   'c2a00000-0000-4000-8000-000000000015', 'tarefa', 'Levantar quantos SKUs o mercado tem hoje', now() - interval '1 day', false)
 on conflict (id) do nothing;

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { exigirSessao, dados } from '../../_componentes/sessao';
@@ -60,7 +61,7 @@ export default async function PaginaOrg({ params, searchParams }: { params: Prom
       <Cabecalho email={sessao.user?.email} titulo={org.nome} />
       {erro && <p className="mensagem mensagem-erro mensagem-solta">{erro}</p>}
       <section className="cartao">
-        <p className="dica"><a href="/painel">Organizações</a> / {org.nome}</p>
+        <p className="dica"><Link href="/painel">Organizações</Link> / {org.nome}</p>
         <h1 className="titulo">{org.nome}</h1>
         {assinatura && (
           <p className="subtitulo">
@@ -68,8 +69,9 @@ export default async function PaginaOrg({ params, searchParams }: { params: Prom
             {assinatura.vence_em ? `, vence em ${new Date(assinatura.vence_em).toLocaleDateString('pt-BR')}` : ''}.
           </p>
         )}
-        <h2 className="titulo-secao">Membros</h2>
+        <h2 className="titulo-secao">Membros <span className="etiqueta">{membros.length}</span></h2>
         <table className="tabela">
+          <thead><tr><th>E-mail</th><th>Papel</th><th><span className="sr-only">Remover</span></th></tr></thead>
           <tbody>
             {membros.map((m) => (
               <tr key={m.user_id}>
@@ -81,7 +83,7 @@ export default async function PaginaOrg({ params, searchParams }: { params: Prom
                       <select className="entrada" name="papel" defaultValue={m.papel}><option value="membro">membro</option><option value="admin">admin</option></select>
                       <button className="botao botao-secundario botao-pequeno">Salvar</button>
                     </form>
-                  ) : <span className="etiqueta">{m.papel}</span>}
+                  ) : <span className="etiqueta" data-tom={m.papel === 'dono' ? 'destaque' : 'neutro'}>{m.papel}</span>}
                 </td>
                 <td>{m.papel !== 'dono' && (gerencia || m.user_id === sessao.user.id) && (
                   <form action={remover}><input type="hidden" name="org" value={id} /><input type="hidden" name="user" value={m.user_id} /><button className="botao botao-secundario botao-pequeno">{m.user_id === sessao.user.id ? 'Sair' : 'Remover'}</button></form>
@@ -97,7 +99,7 @@ export default async function PaginaOrg({ params, searchParams }: { params: Prom
           <h2 className="titulo-secao">Convites</h2>
           <ul className="lista">
             {convites.map((c) => (
-              <li key={c.id}>{c.email} ({c.papel}): mande o link <code>/convite/{c.token}</code></li>
+              <li key={c.id}><strong>{c.email}</strong> <span className="etiqueta" data-tom="aviso">convite pendente, {c.papel}</span><br /><span className="dica">Mande o link <code>/convite/{c.token}</code></span></li>
             ))}
           </ul>
           <form className="linha" action={convidar}>

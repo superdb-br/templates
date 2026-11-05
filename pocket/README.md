@@ -12,6 +12,7 @@ tabelas com RLS (`schema.sql`), dados fictícios para testar (`seed.sql`) e as t
 | [painel-admin](./painel-admin) | Painel com papéis (admin e leitor), busca e paginação |
 | [saas](./saas) | Organizações, membros, convites e estado da assinatura |
 | [crm](./crm) | Contatos, empresas, funil, atividades e lembretes |
+| [assistencia](./assistencia) | Assistência técnica: ordem de serviço, estoque e NFS-e ao entregar (modelo Pro) |
 
 ## Usar um modelo
 
@@ -31,5 +32,7 @@ Depois rode o `schema.sql` no SQL Editor do painel (e o `seed.sql`, se quiser da
 - `catalogo.json` dá a ordem; `<modelo>/pocket.json` é o manifesto (validado por `esquema-manifesto.ts`).
 - O código comum mora em `_base/` e é copiado para cada modelo por `bun bin/templates.ts`. Edite a fonte, não a cópia.
 - Cada `schema.sql` é provado em `tests/sql/pocket-<modelo>.sql`, com dois donos e a chave anon.
+- A cor de cada app está em `app/tema.css` (a mesma do `cor` do `pocket.json`) e o ícone em `public/icone.svg`.
+- As fotos e os vídeos da vitrine saem do app de verdade: `bun bin/pocket-capturar.ts` (Docker, ffmpeg e cwebp), depois `bun bin/gerar-pocket.ts`.
 
 Licença MIT.

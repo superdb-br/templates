@@ -20,3 +20,18 @@ export function mostrar(v: unknown): string {
   if (typeof v === 'object') return JSON.stringify(v);
   return String(v);
 }
+
+const INSTANTE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/;
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+
+/** O valor na célula da tabela: data e hora em português e o id encurtado. Para editar, use mostrar(). */
+export function exibir(v: unknown): string {
+  if (typeof v === 'string' && INSTANTE.test(v)) {
+    const d = new Date(v);
+    if (!Number.isNaN(d.getTime())) {
+      return d.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' });
+    }
+  }
+  if (typeof v === 'string' && UUID.test(v)) return `${v.slice(0, 8)}…`;
+  return mostrar(v);
+}
